@@ -1,0 +1,287 @@
+/* 政績展示頁面樣式 */
+
+/* 政績卡片網格區域 */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  /* 政績卡片基本樣式 */
+  .achievement-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .achievement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 不同類別的卡片背景色 */
+  .achievement-card.blue-bg .achievement-icon {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+  }
+  
+  .achievement-card.green-bg .achievement-icon {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+  }
+  
+  .achievement-card.purple-bg .achievement-icon {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+  }
+  
+  .achievement-card.orange-bg .achievement-icon {
+    background-color: rgba(249, 115, 22, 0.1);
+    color: #f97316;
+  }
+  
+  .achievement-card.teal-bg .achievement-icon {
+    background-color: rgba(20, 184, 166, 0.1);
+    color: #14b8a6;
+  }
+  
+  .achievement-card.red-bg .achievement-icon {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+  
+  /* 卡片內容區域 */
+  .achievement-icon {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .achievement-icon svg {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .achievement-details {
+    padding: 1.5rem;
+    flex: 1;
+    background-color: white;
+  }
+  
+  .achievement-category {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  
+  .achievement-details h3 {
+    font-size: 1.25rem;
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+  }
+  
+  .achievement-details p {
+    color: #4b5563;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .achievement-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .achievement-date {
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+  
+  .view-details-button {
+    background-color: transparent;
+    color: #3b82f6;
+    border: none;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    text-decoration: underline;
+  }
+  
+  .view-details-button:hover {
+    color: #1e40af;
+  }
+  
+  /* 近期活動區域 */
+  .events-section {
+    margin-bottom: 3rem;
+    background-color: #f0f7ff;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .events-section h2 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .event-card {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    min-width: 90px;
+    background-color: #1e40af;
+    color: white;
+  }
+  
+  .event-day {
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1;
+  }
+  
+  .event-month {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+  
+  .event-content {
+    padding: 1.25rem;
+    flex: 1;
+  }
+  
+  .event-content h3 {
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .event-location {
+    display: flex;
+    align-items: center;
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .event-location::before {
+    content: "📍";
+    margin-right: 0.5rem;
+  }
+  
+  .event-description {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  /* 統計區域 */
+  .statistics-section {
+    margin-bottom: 2rem;
+  }
+  
+  .statistics-section h2 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  .statistic-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .statistic-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1e40af;
+    margin-bottom: 0.5rem;
+  }
+  
+  .statistic-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  /* 響應式調整 */
+  @media (max-width: 1024px) {
+    .statistics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .achievements-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .event-date {
+      min-width: 70px;
+      padding: 0.75rem;
+    }
+    
+    .event-day {
+      font-size: 1.5rem;
+    }
+    
+    .event-content {
+      padding: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .statistics-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .statistic-card {
+      padding: 1rem;
+    }
+    
+    .statistic-number {
+      font-size: 2rem;
+    }
+  }
