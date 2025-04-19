@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AdminLogin.css';
 
-function AdminLogin() {
+function AdminLogin({ onLoginSuccess }) {
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''
@@ -22,16 +22,12 @@ function AdminLogin() {
     setError('');
     setLoading(true);
     
-    // 模擬登入請求
+    // 模擬登入請求 - 不做實際驗證，隨便輸入都可以登入
     setTimeout(() => {
       setLoading(false);
-      // 簡單的驗證示例 - 實際應用中應該透過API請求進行驗證
-      if (credentials.username === 'admin' && credentials.password === 'password') {
-        // 登入成功 - 這裡可以跳轉到後台首頁
-        alert('登入成功！實際應用中會跳轉到後台管理首頁。');
-      } else {
-        // 登入失敗
-        setError('帳號或密碼錯誤，請重新輸入。');
+      // 呼叫登入成功回調，跳轉到儀表板
+      if (onLoginSuccess) {
+        onLoginSuccess();
       }
     }, 1000);
   };

@@ -3,6 +3,7 @@ import Homepage from './Homepage/Homepage';
 import PetitionPage from './PetitionPage/PetitionPage';
 import AchievementsPage from './AchievementsPage/AchievementsPage';
 import AdminLogin from './AdminLogin/AdminLogin';
+import AdminDashboard from './AdminDashboard/AdminDashboard';
 import './index.css';
 
 // 添加全局樣式，包括字體引入
@@ -18,6 +19,18 @@ document.head.appendChild(styleElement);
 // 應用主組件
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+  // 處理登入成功
+  const handleLoginSuccess = () => {
+    setIsAdminLoggedIn(true);
+  };
+
+  // 處理登出
+  const handleLogout = () => {
+    setIsAdminLoggedIn(false);
+    setCurrentPage('home');
+  };
 
   // 簡單的頁面路由處理
   const renderPage = () => {
@@ -27,7 +40,10 @@ function App() {
       case 'achievements':
         return <AchievementsPage />;
       case 'admin':
-        return <AdminLogin />;
+        // 如果已登入顯示儀表板，否則顯示登入頁面
+        return isAdminLoggedIn 
+          ? <AdminDashboard onLogout={handleLogout} /> 
+          : <AdminLogin onLoginSuccess={handleLoginSuccess} />;
       case 'home':
       default:
         return <Homepage />;
@@ -36,7 +52,7 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* 頂部導航欄 - 在所有頁面都顯示 */}
+      {/* 頂部導航欄 */}
       <header className="navbar">
         <div className="logo" onClick={() => setCurrentPage('home')} style={{ cursor: 'pointer' }}>
           <span className="icon-clock"></span>
@@ -77,33 +93,35 @@ function App() {
       {/* 頁面內容 */}
       {renderPage()}
 
-      {/* 頁腳 - 在所有頁面都顯示 */}
-      <footer>
-        <div className="footer-content">
-          <div className="footer-section">
-            <h3>關於我們</h3>
-            <p>Deepaign 力求提供優質的交流平台，讓政治人物與民眾共同打造更美好的社區環境。</p>
+      {/* 頁腳 - 在後台儀表板頁面不顯示 */}
+      {!(currentPage === 'admin' && isAdminLoggedIn) && (
+        <footer>
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>關於我們</h3>
+              <p>Deepaign 力求提供優質的交流平台，讓政治人物與民眾共同打造更美好的社區環境。</p>
+            </div>
+            
+            <div className="footer-section">
+              <h3>聯絡資訊</h3>
+              <p>地址：台北市大安區羅斯福路四段1號</p>
+              <p>電話：(02) 2345-6789</p>
+              <p>Email：deepaign.tw@gmail.com</p>
+            </div>
+            
+            <div className="footer-section">
+              <h3>服務時間</h3>
+              <p>週一至週五：9:00 - 18:00</p>
+              <p>週六：9:00 - 12:00（僅電話服務）</p>
+              <p>Line 機器人：24小時服務</p>
+            </div>
           </div>
           
-          <div className="footer-section">
-            <h3>聯絡資訊</h3>
-            <p>地址：台北市大安區羅斯福路四段1號</p>
-            <p>電話：(02) 2345-6789</p>
-            <p>Email：deepaign.tw@gmail.com</p>
+          <div className="copyright">
+            © 2025 Deepaign. All rights reserved.
           </div>
-          
-          <div className="footer-section">
-            <h3>服務時間</h3>
-            <p>週一至週五：9:00 - 18:00</p>
-            <p>週六：9:00 - 12:00（僅電話服務）</p>
-            <p>Line 機器人：24小時服務</p>
-          </div>
-        </div>
-        
-        <div className="copyright">
-          © 2025 Deepaign. All rights reserved.
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 }
