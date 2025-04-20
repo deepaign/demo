@@ -1,5 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Homepage.css';
+
+// 引入更新後的 ChatboxDemo 組件
+import ChatboxDemo from './ChatboxDemo'; // 這裡假設您會將新的 ChatboxDemo 組件放在單獨的文件中
 
 function Homepage({ navigateTo }) {
   // 添加動畫效果與滾動檢測
@@ -245,7 +248,7 @@ function Homepage({ navigateTo }) {
     const scrollIndicator = document.querySelector('.scroll-indicator');
     if (scrollIndicator) {
       scrollIndicator.addEventListener('click', () => {
-        const contentSection = document.querySelector('.welcome-section');
+        const contentSection = document.querySelector('.card-container');
         if (contentSection) {
           contentSection.scrollIntoView({ behavior: 'smooth' });
         }
@@ -266,12 +269,6 @@ function Homepage({ navigateTo }) {
         <div className="scroll-indicator">▼</div>
       </div>
       
-      {/* 歡迎區塊 */}
-      {/* <section className="welcome-section">
-        <h1>歡迎使用智能選服幕僚系統</h1>
-        <p>連結民眾與政治人物，提供即時服務與政績展示</p>
-      </section> */}
-
       {/* 卡片區塊 - 添加淡入效果 */}
       <div className="card-container fade-in-section">
         {/* 左側卡片：Line 官方帳號 */}
@@ -343,92 +340,6 @@ function Homepage({ navigateTo }) {
         <ChatboxDemo />
       </section>
     </main>
-  );
-}
-
-// 聊天框組件
-function ChatboxDemo() {
-  const scrollChat = (direction) => {
-    const chatMessages = document.querySelector('.chat-messages');
-    if (chatMessages) {
-      chatMessages.scrollTop += direction * 100;
-    }
-  };
-
-  return (
-    <div className="chat-container">
-      <div className="chat-messages">
-        <div className="chat-message received">
-          <div className="message-content">
-            您好！我是智能選服幕僚系統，很高興為您服務。請問有什麼我可以幫助您的嗎？
-          </div>
-        </div>
-        
-        <div className="chat-message sent">
-          <div className="message-content">
-            我想要陳情
-          </div>
-        </div>
-        
-        <div className="chat-message received">
-          <div className="message-content">
-            感謝您的陳情意願。請問您的陳情是關於以下哪一類問題？<br />
-            1. 交通問題<br />
-            2. 治安問題<br />
-            3. 環境問題<br />
-            4. 民生服務<br />
-            5. 其他問題
-          </div>
-        </div>
-
-        <div className="chat-message sent">
-          <div className="message-content">
-            3
-          </div>
-        </div>
-
-        <div className="chat-message received">
-          <div className="message-content">
-            了解，您的陳情是關於環境問題。請簡述您遇到的環境問題，越詳細越好，以便我們能更好地協助您。
-          </div>
-        </div>
-
-        <div className="chat-message sent">
-          <div className="message-content">
-            我家附近的公園最近垃圾很多，希望能增加清潔頻率
-          </div>
-        </div>
-
-        <div className="chat-message received">
-          <div className="message-content">
-            感謝您的回報。為了更好地處理您的陳情，請提供以下資訊：<br />
-            1. 公園名稱或確切位置<br />
-            2. 您的姓名<br />
-            3. 聯絡電話或 Email
-          </div>
-        </div>
-
-        <div className="chat-message sent">
-          <div className="message-content">
-            1. 中正公園 2. 王小明 3. 0912345678
-          </div>
-        </div>
-        
-        <div className="chat-message received">
-          <div className="message-content">
-            感謝您提供的資訊，王小明先生/女士。您關於中正公園清潔問題的陳情已成功建立，案件編號為 ENV-20230615-001。<br /><br />
-            我們將儘快處理您的陳情，並在有進展時通知您。您也可以隨時使用「查詢案件」功能，輸入案件編號查詢最新進度。<br /><br />
-            還有其他我可以幫助您的嗎？
-          </div>
-        </div>
-      </div>
-      
-      {/* 聊天室上下捲動指示器 */}
-      <div className="scroll-indicators">
-        <div className="scroll-up" onClick={() => scrollChat(-1)}>▲</div>
-        <div className="scroll-down" onClick={() => scrollChat(1)}>▼</div>
-      </div>
-    </div>
   );
 }
 

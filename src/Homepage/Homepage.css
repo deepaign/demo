@@ -478,3 +478,88 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+
+/* 打字指示器樣式 */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  float: left;
+  margin: 0 1px;
+  background-color: #9e9ea1;
+  display: block;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.typing-indicator span:nth-of-type(1) {
+  animation: 1s blink infinite 0.3333s;
+}
+
+.typing-indicator span:nth-of-type(2) {
+  animation: 1s blink infinite 0.6666s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+  animation: 1s blink infinite 0.9999s;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 訊息淡入效果 */
+.chat-message {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 重新播放按鈕 */
+.replay-button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 10;
+}
+
+.replay-button:hover {
+  background-color: #2563eb;
+}
+
+/* 調整聊天容器樣式，為重播按鈕留出空間 */
+.chat-messages {
+  height: calc(100% - 60px);
+  padding-bottom: 40px;
+}
+
+/* 訊息內容裡的 <br> 格式處理 */
+.message-content {
+  white-space: pre-line;
+}
