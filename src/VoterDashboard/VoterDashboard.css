@@ -1,0 +1,383 @@
+/* 選民資料分析Dashboard樣式 */
+.voter-dashboard {
+    padding: 1.5rem 2rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f5f7fa;
+    min-height: calc(100vh - 56px); /* 扣除導航欄高度 */
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dashboard-header h1 {
+    color: #1a365d;
+    font-size: 1.7rem;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .dashboard-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .period-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    color: #1f2937;
+    font-size: 0.9rem;
+  }
+  
+  .refresh-btn {
+    display: flex;
+    align-items: center;
+    background-color: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .refresh-btn:hover {
+    background-color: #1e3a8a;
+  }
+  
+  .refresh-icon {
+    margin-right: 0.5rem;
+  }
+  
+  .back-btn {
+    display: flex;
+    align-items: center;
+    background-color: #f3f4f6;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .back-btn:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .back-icon {
+    margin-right: 0.5rem;
+  }
+  
+  /* 統計卡片 - 移到頂部 */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .stat-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #1e40af;
+    margin-bottom: 0.3rem;
+  }
+  
+  .stat-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-change {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .stat-change.increase {
+    color: #10b981;
+  }
+  
+  .stat-change.decrease {
+    color: #ef4444;
+  }
+  
+  /* Dashboard網格佈局 */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, minmax(280px, auto));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1a365d;
+    font-weight: 600;
+  }
+  
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .card-action-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .card-action-btn:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 60px); /* 卡片標題高度約為60px */
+  }
+  
+  /* 圖表容器通用樣式 */
+  .chart-container {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* 新增: SVG 圖表通用樣式 */
+  .line-graph, .bar-graph {
+    width: 100%;
+    height: 100%;
+    max-height: 200px;
+  }
+  
+  /* 折線圖樣式 */
+  .line-chart {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .line-path {
+    animation: drawLine 1.5s ease-out forwards;
+  }
+  
+  .data-points circle {
+    animation: fadeInScale 1s ease-out;
+  }
+  
+  @keyframes drawLine {
+    0% {
+      stroke-dasharray: 500;
+      stroke-dashoffset: 500;
+    }
+    100% {
+      stroke-dasharray: 500;
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    80% {
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* 柱狀圖樣式 */
+  .compact-bar-chart, .category-bar-chart {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .bar-rect {
+    animation: growUp 1s ease-out;
+  }
+  
+  @keyframes growUp {
+    from {
+      height: 0;
+      y: 180;
+    }
+  }
+  
+  /* 圖例樣式 */
+  .chart-legend {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-bottom: 0.4rem;
+  }
+  
+  .legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+  }
+  
+  .legend-label {
+    flex: 1;
+  }
+  
+  /* 網格線樣式 */
+  .grid-lines line {
+    stroke-width: 1;
+  }
+  
+  /* 座標軸標籤樣式 */
+  .x-labels text, .y-labels text {
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  
+  /* 加載中骨架屏 */
+  .loading-skeleton {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loadingAnimation 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  .loading-skeleton.linechart,
+  .loading-skeleton.barchart,
+  .loading-skeleton.map,
+  .loading-skeleton.donut {
+    height: 200px;
+  }
+  
+  /* 動畫效果 */
+  @keyframes loadingAnimation {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* 確保所有圖表大小一致 */
+  .interaction-chart,
+  .conversion-chart,
+  .location-chart,
+  .petition-chart {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 響應式設計 */
+  @media (max-width: 1200px) {
+    .stats-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .voter-dashboard {
+      padding: 1rem;
+    }
+    
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .dashboard-actions {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    
+    .stats-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .card-content {
+      padding: 1rem;
+    }
+  }

@@ -4,6 +4,7 @@ import PetitionPage from './PetitionPage/PetitionPage';
 import AchievementsPage from './AchievementsPage/AchievementsPage';
 import AdminLogin from './AdminLogin/AdminLogin';
 import AdminDashboard from './AdminDashboard/AdminDashboard';
+import VoterDashboard from './VoterDashboard/VoterDashboard'; // 選民資料分析頁面
 import './index.css';
 
 // 添加全局樣式，包括字體引入
@@ -44,6 +45,13 @@ function App() {
         return isAdminLoggedIn 
           ? <AdminDashboard onLogout={handleLogout} /> 
           : <AdminLogin onLoginSuccess={handleLoginSuccess} />;
+      case 'voter-dashboard': // 選民資料分析頁面
+        return isAdminLoggedIn 
+          ? <VoterDashboard /> 
+          : <AdminLogin onLoginSuccess={() => {
+              handleLoginSuccess();
+              setCurrentPage('voter-dashboard');
+            }} />;
       case 'home':
       default:
         return <Homepage />;
@@ -82,6 +90,13 @@ function App() {
           </a>
           <a 
             href="#" 
+            className={currentPage === 'voter-dashboard' ? 'active' : ''} 
+            onClick={(e) => { e.preventDefault(); setCurrentPage('voter-dashboard'); }}
+          >
+            選民資料分析
+          </a>
+          <a 
+            href="#" 
             className={currentPage === 'admin' ? 'active' : ''} 
             onClick={(e) => { e.preventDefault(); setCurrentPage('admin'); }}
           >
@@ -93,8 +108,9 @@ function App() {
       {/* 頁面內容 */}
       {renderPage()}
 
-      {/* 頁腳 - 在後台儀表板頁面不顯示 */}
-      {!(currentPage === 'admin' && isAdminLoggedIn) && (
+      {/* 頁腳 - 在後台儀表板頁面和選民資料分析頁面不顯示 */}
+      {!(currentPage === 'admin' && isAdminLoggedIn) && 
+       !(currentPage === 'voter-dashboard' && isAdminLoggedIn) && (
         <footer>
           <div className="footer-content">
             <div className="footer-section">

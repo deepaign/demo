@@ -19,6 +19,10 @@ function AdminDashboard({ onLogout }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // 當前選中的案件
   const [selectedCase, setSelectedCase] = useState(null);
+  // 類別篩選狀態
+  const [categoryFilter, setCategoryFilter] = useState('全部');
+  // 日期篩選狀態
+  const [dateFilter, setDateFilter] = useState('全部');
   
   // 登出功能
   const handleLogout = () => {
@@ -61,44 +65,34 @@ function AdminDashboard({ onLogout }) {
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <h1>後台管理系統</h1>
-        <button className="logout-btn" onClick={handleLogout}>
-          <span className="logout-icon"></span>
-          登出
-        </button>
+        <div className="dashboard-actions">
+          <button className="logout-btn" onClick={handleLogout}>
+            <span className="logout-icon"></span>
+            登出
+          </button>
+        </div>
       </div>
       
-      {/* 儀表板統計卡片 */}
+      {/* 簡化的儀表板統計卡片 */}
       <div className="statistics-cards">
         <div className="stat-card red">
-          <div className="stat-icon">⏰</div>
-          <div className="stat-content">
-            <div className="stat-title">待處理案件</div>
-            <div className="stat-number">12</div>
-          </div>
+          <div className="stat-title">待處理案件</div>
+          <div className="stat-number">12</div>
         </div>
         
         <div className="stat-card blue">
-          <div className="stat-icon">🔄</div>
-          <div className="stat-content">
-            <div className="stat-title">處理中案件</div>
-            <div className="stat-number">24</div>
-          </div>
+          <div className="stat-title">處理中案件</div>
+          <div className="stat-number">24</div>
         </div>
         
         <div className="stat-card green">
-          <div className="stat-icon">✅</div>
-          <div className="stat-content">
-            <div className="stat-title">已完成案件</div>
-            <div className="stat-number">127</div>
-          </div>
+          <div className="stat-title">已完成案件</div>
+          <div className="stat-number">127</div>
         </div>
         
         <div className="stat-card yellow">
-          <div className="stat-icon">📅</div>
-          <div className="stat-content">
-            <div className="stat-title">今日新增</div>
-            <div className="stat-number">8</div>
-          </div>
+          <div className="stat-title">今日新增</div>
+          <div className="stat-number">8</div>
         </div>
       </div>
       
@@ -130,19 +124,33 @@ function AdminDashboard({ onLogout }) {
         </div>
       </div>
       
-      {/* 過濾器 */}
+      {/* 過濾器 - 更新部分 */}
       <div className="filters">
         <div className="filter-group">
           <label>類別:</label>
-          <select>
-            <option>全部</option>
+          <select 
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
+            <option value="全部">全部</option>
+            <option value="環境問題">環境問題</option>
+            <option value="交通問題">交通問題</option>
+            <option value="治安問題">治安問題</option>
+            <option value="民生服務">民生服務</option>
+            <option value="其他問題">其他問題</option>
           </select>
         </div>
         
         <div className="filter-group">
           <label>日期:</label>
-          <select>
-            <option>全部</option>
+          <select
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+          >
+            <option value="全部">全部</option>
+            <option value="本週">本週</option>
+            <option value="本月">本月</option>
+            <option value="上個月">上個月</option>
           </select>
         </div>
         
