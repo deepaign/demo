@@ -30,6 +30,34 @@
   align-items: center;
 }
 
+/* 切換視圖按鈕 */
+.view-toggle-btn {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-toggle-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.list-icon::before {
+  content: "☰";
+  margin-right: 0.5rem;
+}
+
+.card-icon::before {
+  content: "⊞";
+  margin-right: 0.5rem;
+}
+
 /* 新增案件按鈕 */
 .create-case-btn {
   display: flex;
@@ -79,7 +107,7 @@
   display: inline-block;
 }
 
-/* 統計卡片 */
+/* 統計卡片 - 移除圖示，只保留數字 */
 .statistics-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -91,11 +119,12 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 1.2rem;
+  padding: 1.5rem;
   display: flex;
-  align-items: center;
+  justify-content: center;
   height: 110px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
 .stat-card:hover {
@@ -119,39 +148,12 @@
   border-left: 4px solid #f59e0b;
 }
 
-.stat-icon {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  margin-right: 1.2rem;
-  flex-shrink: 0;
-  background-color: #f9fafb;
-}
-
-.icon-waiting::before {
-  content: "⏰";
-}
-
-.icon-processing::before {
-  content: "🔄";
-}
-
-.icon-completed::before {
-  content: "✅";
-}
-
-.icon-today::before {
-  content: "📅";
-}
-
 .stat-content {
-  flex: 1;
-  width: 100%; /* 保證寬度 */
-  overflow: hidden; /* 防止內容溢出 */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .stat-title {
@@ -262,7 +264,7 @@
   font-size: 0.9rem;
 }
 
-/* 案件卡片列表 - 新增的卡片式布局 */
+/* 案件卡片列表 */
 .case-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -418,6 +420,88 @@
 
 .view-btn:hover {
   text-decoration: underline;
+}
+
+/* 列表視圖樣式 */
+.case-list-container {
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.case-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.case-list-table th {
+  background-color: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.case-list-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #1f2937;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.case-list-table tr:hover {
+  background-color: #f9fafb;
+}
+
+.case-id-cell {
+  font-family: monospace;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.case-title-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #1e3a8a;
+  font-weight: 500;
+}
+
+.priority-tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.list-view-btn {
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.list-view-btn:hover {
+  background-color: #1e3a8a;
+}
+
+.empty-row td {
+  padding: 3rem 1rem;
+  text-align: center;
 }
 
 /* 無數據狀態 */
