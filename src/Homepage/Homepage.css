@@ -277,46 +277,73 @@ main {
 .chatbot-demo {
   background-color: #f0f7ff;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 2rem;
   margin-bottom: 2rem;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding: 1.5rem 2rem;
 }
 
 .chatbot-demo h2 {
   color: #1e3a8a;
   font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.chat-container {
-  position: relative;
+/* 三個聊天框相關樣式 */
+.chat-boxes-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.chat-box-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: calc(33.33% - 1rem);
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  height: 400px;
-  width: calc(100% / 2);
-  margin: 0 auto;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
 }
 
 @media (max-width: 992px) {
-  .chat-container {
-    width: 100%;
+  .chat-box-container {
+    max-width: 100%;
+    margin-bottom: 1.5rem;
   }
 }
 
+.chat-header {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.8rem 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
 .chat-messages {
-  height: calc(100% - 40px);
+  flex: 1;
   overflow-y: auto;
   padding: 1rem;
+  background-color: #f9fafb;
 }
 
 .chat-message {
   margin-bottom: 1rem;
   max-width: 80%;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .chat-message.received {
@@ -332,6 +359,8 @@ main {
   border-radius: 8px;
   background-color: #f1f5f9;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .chat-message.sent .message-content {
@@ -339,27 +368,64 @@ main {
   color: white;
 }
 
-/* 捲動指示器 */
-.scroll-indicators {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  color: #94a3b8;
+.replay-button {
+  margin: 0.5rem auto;
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: block;
+  transition: background-color 0.3s;
 }
 
-.scroll-up, .scroll-down {
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
+.replay-button:hover {
+  background-color: #2563eb;
+}
+
+/* 打字指示器 */
+.typing-indicator {
   display: flex;
   align-items: center;
-  justify-content: center;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  float: left;
+  margin: 0 1px;
+  background-color: #9e9ea1;
+  display: block;
   border-radius: 50%;
-  background-color: #f1f5f9;
+  opacity: 0.4;
+  animation: blink 1s infinite;
+}
+
+.typing-indicator span:nth-of-type(1) {
+  animation-delay: 0.33s;
+}
+
+.typing-indicator span:nth-of-type(2) {
+  animation-delay: 0.66s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+  animation-delay: 0.99s;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 訊息內容裡的 <br> 格式處理 */
+.message-content {
+  white-space: pre-line;
 }
 
 /* 頁腳樣式 */
@@ -479,87 +545,32 @@ html {
   scroll-behavior: smooth;
 }
 
-/* 打字指示器樣式 */
-.typing-indicator {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+/* 政績展示卡片網格 - 修改為每行四個 */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2rem;
 }
 
-.typing-indicator span {
-  height: 8px;
-  width: 8px;
-  float: left;
-  margin: 0 1px;
-  background-color: #9e9ea1;
-  display: block;
-  border-radius: 50%;
-  opacity: 0.4;
-}
-
-.typing-indicator span:nth-of-type(1) {
-  animation: 1s blink infinite 0.3333s;
-}
-
-.typing-indicator span:nth-of-type(2) {
-  animation: 1s blink infinite 0.6666s;
-}
-
-.typing-indicator span:nth-of-type(3) {
-  animation: 1s blink infinite 0.9999s;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 1;
+@media (max-width: 1200px) {
+  .achievements-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* 訊息淡入效果 */
-.chat-message {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (max-width: 992px) {
+  .achievements-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* 重新播放按鈕 */
-.replay-button {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  z-index: 10;
-}
-
-.replay-button:hover {
-  background-color: #2563eb;
-}
-
-/* 調整聊天容器樣式，為重播按鈕留出空間 */
-.chat-messages {
-  height: calc(100% - 60px);
-  padding-bottom: 40px;
-}
-
-/* 訊息內容裡的 <br> 格式處理 */
-.message-content {
-  white-space: pre-line;
+@media (max-width: 576px) {
+  .achievements-grid {
+    grid-template-columns: 1fr;
+  }
 }

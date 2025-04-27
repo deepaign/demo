@@ -10,7 +10,7 @@ function AchievementsPage() {
         <p>林聰明議員致力於改善社區環境、促進居民福祉，以下是近期完成的重要政績</p>
       </section>
 
-      {/* 政績卡片區塊 */}
+      {/* 政績卡片區塊 - 調整為一排四個，共兩排 */}
       <div className="achievements-grid">
         {/* 政績卡片 1 */}
         <div className="achievement-card blue-bg">
@@ -120,6 +120,42 @@ function AchievementsPage() {
             <p>完成社區監控系統升級，安裝高清攝像頭與智能預警系統，增強夜間安全防護能力。</p>
             <div className="achievement-meta">
               <div className="achievement-date">2023年1月完成</div>
+              <button className="view-details-button">查看詳情</button>
+            </div>
+          </div>
+        </div>
+        
+        {/* 政績卡片 7 - 新增 */}
+        <div className="achievement-card blue-bg">
+          <div className="achievement-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="icon-education">
+              <path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM17 15.99L12 18.72L7 15.99V12.27L12 15L17 12.27V15.99Z" fill="currentColor" />
+            </svg>
+          </div>
+          <div className="achievement-details">
+            <div className="achievement-category">教育資源</div>
+            <h3>數位學習中心啟用</h3>
+            <p>建立社區數位學習中心，提供免費電腦與網路資源，已服務超過500名學童與長者。</p>
+            <div className="achievement-meta">
+              <div className="achievement-date">2022年12月完成</div>
+              <button className="view-details-button">查看詳情</button>
+            </div>
+          </div>
+        </div>
+
+        {/* 政績卡片 8 - 新增 */}
+        <div className="achievement-card green-bg">
+          <div className="achievement-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="icon-park">
+              <path d="M17 12h2L12 3 2 12h2v8h3v-6h6v6h4v-8zm2 2v8h-8v-6H9v6H3v-8L2 12l10-9 10 9-1 2h-2z" fill="currentColor" />
+            </svg>
+          </div>
+          <div className="achievement-details">
+            <div className="achievement-category">休閒設施</div>
+            <h3>河濱公園整修計畫</h3>
+            <p>完成河濱公園整修工程，增設自行車道、景觀平台與親水區域，豐富市民休閒選擇。</p>
+            <div className="achievement-meta">
+              <div className="achievement-date">2022年11月完成</div>
               <button className="view-details-button">查看詳情</button>
             </div>
           </div>
