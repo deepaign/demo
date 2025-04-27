@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import './Homepage.css';
 
-// 引入更新後的 ChatboxDemo 組件
-import ChatboxDemo from './ChatboxDemo'; // 這裡假設您會將新的 ChatboxDemo 組件放在單獨的文件中
+// 引入三框對話模式展示組件
+import ThreeChatBoxes from './ThreeChatBoxes';
 
 function Homepage({ navigateTo }) {
   // 添加動畫效果與滾動檢測
@@ -333,11 +333,12 @@ function Homepage({ navigateTo }) {
         </div>
       </div>
 
-      {/* Line 機器人功能展示區塊 - 添加淡入效果 */}
+      {/* Line 機器人功能展示區塊 - 添加三框對話模式 */}
       <section className="chatbot-demo fade-in-section">
         <h2>Line 機器人功能展示</h2>
         
-        <ChatboxDemo />
+        {/* 使用三框對話模式展示組件 */}
+        <ThreeChatBoxes />
       </section>
     </main>
   );

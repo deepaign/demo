@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './VoterDashboard.css';
+import { Area, AreaChart, BarChart, Bar, PieChart, Pie, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 
 function VoterDashboard({ onNavigate }) {
   // 假設這些是從API獲取的數據
   const [isLoading, setIsLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState("30d");
   
   // 模擬數據加載
   useEffect(() => {
@@ -19,6 +21,94 @@ function VoterDashboard({ onNavigate }) {
     if (onNavigate) {
       onNavigate('admin');
     }
+  };
+
+  // 折線圖數據
+  const lineChartData = [
+    { date: '週一', desktop: 120, mobile: 80 },
+    { date: '週二', desktop: 75, mobile: 50 },
+    { date: '週三', desktop: 95, mobile: 70 },
+    { date: '週四', desktop: 55, mobile: 40 },
+    { date: '週五', desktop: 85, mobile: 60 },
+    { date: '週六', desktop: 125, mobile: 90 },
+  ];
+
+  // 區域分布數據
+  const locationData = [
+    { name: '大安區', value: 1450 },
+    { name: '松山區', value: 950 },
+    { name: '信義區', value: 1200 },
+    { name: '北投區', value: 700 },
+    { name: '中山區', value: 1700 },
+    { name: '文山區', value: 570 },
+    { name: '南港區', value: 950 },
+    { name: '萬華區', value: 1060 },
+    { name: '士林區', value: 820 },
+    { name: '內湖區', value: 1360 },
+  ];
+
+  // 轉換率數據
+  const conversionData = [
+    { month: '一月', value: 30 },
+    { month: '二月', value: 50 },
+    { month: '三月', value: 70 },
+    { month: '四月', value: 80 },
+    { month: '五月', value: 90 },
+    { month: '六月', value: 85 },
+  ];
+
+  // 陳情類別分布數據
+  const petitionData = [
+    { name: '環境問題', value: 45 },
+    { name: '交通問題', value: 32 },
+    { name: '治安問題', value: 25 },
+    { name: '民生服務', value: 20 },
+    { name: '其他問題', value: 5 },
+  ];
+
+  // 互動頻率折線圖數據 (更多數據點)
+  const interactionData = [
+    { date: '2024-01-01', visitors: 400 },
+    { date: '2024-02-01', visitors: 300 },
+    { date: '2024-03-01', visitors: 500 },
+    { date: '2024-04-01', visitors: 280 },
+    { date: '2024-05-01', visitors: 200 },
+    { date: '2024-06-01', visitors: 450 },
+    { date: '2024-07-01', visitors: 380 },
+    { date: '2024-08-01', visitors: 420 },
+    { date: '2024-09-01', visitors: 350 },
+    { date: '2024-10-01', visitors: 490 },
+    { date: '2024-11-01', visitors: 520 },
+    { date: '2024-12-01', visitors: 550 },
+  ];
+
+  // 定義藍綠色調
+  const blueGreenColors = ['#3b82f6', '#10b981', '#0ea5e9', '#14b8a6', '#0d9488'];
+  
+  // 每個區域的顏色
+  const locationColors = [
+    '#3b82f6', '#10b981', '#0ea5e9', '#14b8a6', '#0d9488',
+    '#0369a1', '#059669', '#0284c7', '#0f766e', '#047857'
+  ];
+
+  // 圓餅圖的顏色
+  const pieColors = ['#3b82f6', '#10b981', '#0ea5e9', '#14b8a6', '#0d9488'];
+
+  // 自定義工具提示
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p className="label">{`${label}`}</p>
+          {payload.map((entry, index) => (
+            <p key={index} style={{ color: entry.color }}>
+              {`${entry.name}: ${entry.value}`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -43,7 +133,7 @@ function VoterDashboard({ onNavigate }) {
         </div>
       </div>
       
-      {/* 將統計數字卡片移到最上方 */}
+      {/* 將統計數字卡片保留在最上方 */}
       <div className="stats-container">
         <div className="stat-card">
           <div className="stat-value">4,521</div>
@@ -70,14 +160,65 @@ function VoterDashboard({ onNavigate }) {
         </div>
       </div>
       
+      {/* 新增折線圖 - 顯示總訪問量 */}
+      <div className="chart-card">
+        <div className="chart-header">
+          <h3>總訪問量</h3>
+          <div className="chart-actions">
+            <select 
+              value={timeRange} 
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="chart-time-select"
+            >
+              <option value="90d">過去三個月</option>
+              <option value="30d">過去30天</option>
+              <option value="7d">過去7天</option>
+            </select>
+          </div>
+        </div>
+        <div className="chart-body">
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={interactionData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis 
+                dataKey="date" 
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString('zh-TW', { month: 'short' });
+                }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis 
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value) => `${value}`}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Area 
+                type="monotone" 
+                dataKey="visitors" 
+                stroke="#3b82f6" 
+                fillOpacity={1} 
+                fill="url(#colorVisitors)" 
+                name="訪問數"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+      
       <div className="dashboard-grid">
         {/* 第一行：Line官方帳號互動頻率 (折線圖) */}
         <div className="dashboard-card">
           <div className="card-header">
             <h3>Line官方帳號互動頻率</h3>
-            <div className="card-actions">
-              <button className="card-action-btn">⋮</button>
-            </div>
           </div>
           
           <div className="card-content">
@@ -85,71 +226,47 @@ function VoterDashboard({ onNavigate }) {
               <div className="loading-skeleton linechart"></div>
             ) : (
               <div className="interaction-chart chart-container">
-                <div className="line-chart">
-                  <svg viewBox="0 0 400 200" className="line-graph">
-                    {/* 背景網格 */}
-                    <g className="grid-lines">
-                      <line x1="40" y1="20" x2="40" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="180" x2="380" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="140" x2="380" y2="140" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="100" x2="380" y2="100" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="60" x2="380" y2="60" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="20" x2="380" y2="20" stroke="#e5e7eb" strokeDasharray="4" />
-                    </g>
-                    
-                    {/* Y軸標籤 */}
-                    <g className="y-labels">
-                      <text x="35" y="180" textAnchor="end" fontSize="10" fill="#6b7280">0</text>
-                      <text x="35" y="140" textAnchor="end" fontSize="10" fill="#6b7280">25</text>
-                      <text x="35" y="100" textAnchor="end" fontSize="10" fill="#6b7280">50</text>
-                      <text x="35" y="60" textAnchor="end" fontSize="10" fill="#6b7280">75</text>
-                      <text x="35" y="20" textAnchor="end" fontSize="10" fill="#6b7280">100</text>
-                    </g>
-                    
-                    {/* X軸標籤 */}
-                    <g className="x-labels">
-                      <text x="90" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">週一</text>
-                      <text x="140" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">週二</text>
-                      <text x="190" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">週三</text>
-                      <text x="240" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">週四</text>
-                      <text x="290" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">週五</text>
-                      <text x="340" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">週六</text>
-                    </g>
-                    
-                    {/* 折線 */}
-                    <path 
-                      d="M90,115 L140,75 L190,95 L240,55 L290,85 L340,125" 
-                      fill="none" 
-                      stroke="#3b82f6" 
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="line-path"
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={lineChartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis 
+                      dataKey="date" 
+                      tickLine={false}
+                      axisLine={false}
                     />
-                    
-                    {/* 折線上的點 */}
-                    <g className="data-points">
-                      <circle cx="90" cy="115" r="5" fill="#3b82f6" />
-                      <circle cx="140" cy="75" r="5" fill="#3b82f6" />
-                      <circle cx="190" cy="95" r="5" fill="#3b82f6" />
-                      <circle cx="240" cy="55" r="5" fill="#3b82f6" />
-                      <circle cx="290" cy="85" r="5" fill="#3b82f6" />
-                      <circle cx="340" cy="125" r="5" fill="#3b82f6" />
-                    </g>
-                  </svg>
-                </div>
+                    <YAxis 
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Line 
+                      type="monotone" 
+                      dataKey="desktop" 
+                      stroke="#3b82f6" 
+                      strokeWidth={2} 
+                      activeDot={{ r: 8 }}
+                      name="桌面"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mobile" 
+                      stroke="#10b981" 
+                      strokeWidth={2} 
+                      activeDot={{ r: 8 }}
+                      name="移動端"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             )}
           </div>
         </div>
         
-        {/* 第一行：互動轉換率 (改為折線圖) - 與地理分布交換位置 */}
+        {/* 第一行：互動轉換率 (折線圖) */}
         <div className="dashboard-card">
           <div className="card-header">
             <h3>互動轉換率</h3>
-            <div className="card-actions">
-              <button className="card-action-btn">⋮</button>
-            </div>
           </div>
           
           <div className="card-content">
@@ -157,81 +274,39 @@ function VoterDashboard({ onNavigate }) {
               <div className="loading-skeleton linechart"></div>
             ) : (
               <div className="conversion-chart chart-container">
-                <div className="line-chart">
-                  <svg viewBox="0 0 400 200" className="line-graph">
-                    {/* 背景網格 */}
-                    <g className="grid-lines">
-                      <line x1="40" y1="20" x2="40" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="180" x2="380" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="140" x2="380" y2="140" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="100" x2="380" y2="100" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="60" x2="380" y2="60" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="20" x2="380" y2="20" stroke="#e5e7eb" strokeDasharray="4" />
-                    </g>
-                    
-                    {/* Y軸標籤 */}
-                    <g className="y-labels">
-                      <text x="35" y="180" textAnchor="end" fontSize="10" fill="#6b7280">0%</text>
-                      <text x="35" y="140" textAnchor="end" fontSize="10" fill="#6b7280">25%</text>
-                      <text x="35" y="100" textAnchor="end" fontSize="10" fill="#6b7280">50%</text>
-                      <text x="35" y="60" textAnchor="end" fontSize="10" fill="#6b7280">75%</text>
-                      <text x="35" y="20" textAnchor="end" fontSize="10" fill="#6b7280">100%</text>
-                    </g>
-                    
-                    {/* X軸標籤 */}
-                    <g className="x-labels">
-                      <text x="90" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">一月</text>
-                      <text x="140" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">二月</text>
-                      <text x="190" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">三月</text>
-                      <text x="240" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">四月</text>
-                      <text x="290" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">五月</text>
-                      <text x="340" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">六月</text>
-                    </g>
-                    
-                    {/* 折線 */}
-                    <path 
-                      d="M90,130 L140,100 L190,80 L240,70 L290,60 L340,65" 
-                      fill="none" 
-                      stroke="#e91e63" 
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="line-path"
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={conversionData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis 
+                      dataKey="month" 
+                      tickLine={false}
+                      axisLine={false}
                     />
-                    
-                    {/* 折線上的點 */}
-                    <g className="data-points">
-                      <circle cx="90" cy="130" r="5" fill="#e91e63" />
-                      <circle cx="140" cy="100" r="5" fill="#e91e63" />
-                      <circle cx="190" cy="80" r="5" fill="#e91e63" />
-                      <circle cx="240" cy="70" r="5" fill="#e91e63" />
-                      <circle cx="290" cy="60" r="5" fill="#e91e63" />
-                      <circle cx="340" cy="65" r="5" fill="#e91e63" />
-                    </g>
-                    
-                    {/* 當前轉換率值標註 */}
-                    <text x="350" y="45" fontSize="18" fill="#e91e63" fontWeight="bold">75%</text>
-                  </svg>
-                </div>
-                
-                <div className="chart-legend">
-                  <div className="legend-item">
-                    <span className="legend-color" style={{backgroundColor: '#e91e63'}}></span>
-                    <span className="legend-label">圖文閱讀轉陳情</span>
-                  </div>
-                </div>
+                    <YAxis 
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(value) => `${value}%`}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Line 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#0ea5e9" 
+                      strokeWidth={2} 
+                      activeDot={{ r: 8 }}
+                      name="轉換率"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             )}
           </div>
         </div>
         
-        {/* 第二行：選民地理分布 (柱状图) - 與互動轉換率交換位置 */}
+        {/* 第二行：選民地理分布 (柱状图) */}
         <div className="dashboard-card">
           <div className="card-header">
             <h3>選民地理分布</h3>
-            <div className="card-actions">
-              <button className="card-action-btn">⋮</button>
-            </div>
           </div>
           
           <div className="card-content">
@@ -239,86 +314,36 @@ function VoterDashboard({ onNavigate }) {
               <div className="loading-skeleton barchart"></div>
             ) : (
               <div className="location-chart chart-container">
-                <div className="compact-bar-chart">
-                  <svg viewBox="0 0 400 200" className="bar-graph">
-                    {/* 背景網格 */}
-                    <g className="grid-lines">
-                      <line x1="40" y1="20" x2="40" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="180" x2="380" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="140" x2="380" y2="140" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="100" x2="380" y2="100" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="60" x2="380" y2="60" stroke="#e5e7eb" strokeDasharray="4" />
-                    </g>
-                    
-                    {/* Y軸標籤 */}
-                    <g className="y-labels">
-                      <text x="35" y="180" textAnchor="end" fontSize="10" fill="#6b7280">0</text>
-                      <text x="35" y="140" textAnchor="end" fontSize="10" fill="#6b7280">500</text>
-                      <text x="35" y="100" textAnchor="end" fontSize="10" fill="#6b7280">1000</text>
-                      <text x="35" y="60" textAnchor="end" fontSize="10" fill="#6b7280">1500</text>
-                    </g>
-                    
-                    {/* 柱狀圖 */}
-                    <g className="bars">
-                      <rect x="50" y="45" width="24" height="135" fill="#3b82f6" className="bar-rect">
-                        <title>大安區: 1450</title>
-                      </rect>
-                      <rect x="80" y="85" width="24" height="95" fill="#3b82f6" className="bar-rect">
-                        <title>松山區: 950</title>
-                      </rect>
-                      <rect x="110" y="65" width="24" height="115" fill="#3b82f6" className="bar-rect">
-                        <title>信義區: 1200</title>
-                      </rect>
-                      <rect x="140" y="110" width="24" height="70" fill="#3b82f6" className="bar-rect">
-                        <title>北投區: 700</title>
-                      </rect>
-                      <rect x="170" y="30" width="24" height="150" fill="#3b82f6" className="bar-rect">
-                        <title>中山區: 1700</title>
-                      </rect>
-                      <rect x="200" y="125" width="24" height="55" fill="#3b82f6" className="bar-rect">
-                        <title>文山區: 570</title>
-                      </rect>
-                      <rect x="230" y="85" width="24" height="95" fill="#3b82f6" className="bar-rect">
-                        <title>南港區: 950</title>
-                      </rect>
-                      <rect x="260" y="75" width="24" height="105" fill="#3b82f6" className="bar-rect">
-                        <title>萬華區: 1060</title>
-                      </rect>
-                      <rect x="290" y="100" width="24" height="80" fill="#3b82f6" className="bar-rect">
-                        <title>士林區: 820</title>
-                      </rect>
-                      <rect x="320" y="55" width="24" height="125" fill="#3b82f6" className="bar-rect">
-                        <title>內湖區: 1360</title>
-                      </rect>
-                    </g>
-                    
-                    {/* X軸標籤 */}
-                    <g className="x-labels">
-                      <text x="62" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">大安區</text>
-                      <text x="92" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">松山區</text>
-                      <text x="122" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">信義區</text>
-                      <text x="152" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">北投區</text>
-                      <text x="182" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">中山區</text>
-                      <text x="212" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">文山區</text>
-                      <text x="242" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">南港區</text>
-                      <text x="272" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">萬華區</text>
-                      <text x="302" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">士林區</text>
-                      <text x="332" y="195" textAnchor="middle" fontSize="9" fill="#6b7280">內湖區</text>
-                    </g>
-                  </svg>
-                </div>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={locationData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis 
+                      dataKey="name" 
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={11}
+                    />
+                    <YAxis 
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar dataKey="value" name="人數">
+                      {locationData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={locationColors[index % locationColors.length]} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             )}
           </div>
         </div>
         
-        {/* 第二行：陳情類別分布 (柱状图) */}
+        {/* 第二行：陳情類別分布 (餅图) */}
         <div className="dashboard-card">
           <div className="card-header">
             <h3>陳情類別分布</h3>
-            <div className="card-actions">
-              <button className="card-action-btn">⋮</button>
-            </div>
           </div>
           
           <div className="card-content">
@@ -326,63 +351,26 @@ function VoterDashboard({ onNavigate }) {
               <div className="loading-skeleton barchart"></div>
             ) : (
               <div className="petition-chart chart-container">
-                <div className="category-bar-chart">
-                  <svg viewBox="0 0 400 200" className="bar-graph">
-                    {/* 背景網格 */}
-                    <g className="grid-lines">
-                      <line x1="40" y1="20" x2="40" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="180" x2="380" y2="180" stroke="#e5e7eb" />
-                      <line x1="40" y1="140" x2="380" y2="140" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="100" x2="380" y2="100" stroke="#e5e7eb" strokeDasharray="4" />
-                      <line x1="40" y1="60" x2="380" y2="60" stroke="#e5e7eb" strokeDasharray="4" />
-                    </g>
-                    
-                    {/* Y軸標籤 */}
-                    <g className="y-labels">
-                      <text x="35" y="180" textAnchor="end" fontSize="10" fill="#6b7280">0%</text>
-                      <text x="35" y="140" textAnchor="end" fontSize="10" fill="#6b7280">25%</text>
-                      <text x="35" y="100" textAnchor="end" fontSize="10" fill="#6b7280">50%</text>
-                      <text x="35" y="60" textAnchor="end" fontSize="10" fill="#6b7280">75%</text>
-                    </g>
-                    
-                    {/* 柱狀圖 */}
-                    <g className="bars">
-                      <rect x="75" y="105" width="40" height="75" fill="#3B82F6" className="bar-rect">
-                        <title>環境問題: 45%</title>
-                      </rect>
-                      <rect x="135" y="115" width="40" height="65" fill="#10B981" className="bar-rect">
-                        <title>交通問題: 32%</title>
-                      </rect>
-                      <rect x="195" y="135" width="40" height="45" fill="#F59E0B" className="bar-rect">
-                        <title>治安問題: 25%</title>
-                      </rect>
-                      <rect x="255" y="145" width="40" height="35" fill="#EF4444" className="bar-rect">
-                        <title>民生服務: 20%</title>
-                      </rect>
-                      <rect x="315" y="165" width="40" height="15" fill="#8B5CF6" className="bar-rect">
-                        <title>其他問題: 5%</title>
-                      </rect>
-                    </g>
-                    
-                    {/* 柱狀圖上的數值標籤 */}
-                    <g className="bar-labels">
-                      <text x="95" y="100" textAnchor="middle" fontSize="12" fill="#fff" fontWeight="bold">45%</text>
-                      <text x="155" y="110" textAnchor="middle" fontSize="12" fill="#fff" fontWeight="bold">32%</text>
-                      <text x="215" y="130" textAnchor="middle" fontSize="12" fill="#fff" fontWeight="bold">25%</text>
-                      <text x="275" y="140" textAnchor="middle" fontSize="12" fill="#fff" fontWeight="bold">20%</text>
-                      <text x="335" y="160" textAnchor="middle" fontSize="12" fill="#8B5CF6" fontWeight="bold">5%</text>
-                    </g>
-                    
-                    {/* X軸標籤 */}
-                    <g className="x-labels">
-                      <text x="95" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">環境問題</text>
-                      <text x="155" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">交通問題</text>
-                      <text x="215" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">治安問題</text>
-                      <text x="275" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">民生服務</text>
-                      <text x="335" y="195" textAnchor="middle" fontSize="10" fill="#6b7280">其他問題</text>
-                    </g>
-                  </svg>
-                </div>
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie
+                      data={petitionData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      nameKey="name"
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {petitionData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
             )}
           </div>
