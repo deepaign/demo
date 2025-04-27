@@ -25,6 +25,7 @@ function CaseDetailModal({ isOpen, onClose, caseData }) {
     method: '電話',
     reminderDate: '',
     reminderMessage: '',
+    contactInfo: '',  // 新增的聯絡資訊欄位
     sendMultipleNotices: false
   });
   
@@ -114,6 +115,11 @@ function CaseDetailModal({ isOpen, onClose, caseData }) {
     
     if (notificationSettings.method !== '電話' && !notificationSettings.reminderMessage) {
       showAlert('請輸入通知訊息內容');
+      return;
+    }
+    
+    if (!notificationSettings.contactInfo) {
+      showAlert('請輸入聯絡資訊');
       return;
     }
     
@@ -330,6 +336,27 @@ function CaseDetailModal({ isOpen, onClose, caseData }) {
                   </div>
                 </div>
                 
+                {/* 新增聯絡資訊欄位 */}
+                <div className="form-group">
+                  <label htmlFor="contactInfo">
+                    {notificationSettings.method === '電話' ? '聯絡電話' :
+                     notificationSettings.method === '簡訊' ? '手機號碼' :
+                     notificationSettings.method === '電子郵件' ? 'Email 地址' : 'Line ID'}
+                  </label>
+                  <input
+                    type={notificationSettings.method === '電子郵件' ? 'email' : 'text'}
+                    id="contactInfo"
+                    name="contactInfo"
+                    value={notificationSettings.contactInfo}
+                    onChange={handleNotificationChange}
+                    placeholder={`請輸入${
+                      notificationSettings.method === '電話' ? '聯絡電話' :
+                      notificationSettings.method === '簡訊' ? '手機號碼' :
+                      notificationSettings.method === '電子郵件' ? 'Email 地址' : 'Line ID'
+                    }`}
+                  />
+                </div>
+                
                 {notificationSettings.method !== '電話' && (
                   <div className="form-group">
                     <label htmlFor="reminderMessage">通知訊息</label>
@@ -389,17 +416,7 @@ function CaseDetailModal({ isOpen, onClose, caseData }) {
             </div>
           </div>
           
-          {/* 處理經過和結果區塊 */}
-          <div className="process-results-section">
-            <h3>處理經過與結果</h3>
-            <div className="process-record">
-              <textarea
-                className="record-content"
-                value={caseData.processRecord || '2023/06/15 15:20 李晉偉：已聯繫環保局，安排增加清潔頻率，預計下週一開始實施。\n2023/06/16 10:45 張晉偉：環保局回覆將增加每日清潔次數從1次到2次，並增設2個垃圾桶。'}
-                readOnly
-              ></textarea>
-            </div>
-          </div>
+          {/* 移除處理經過與結果區塊，只保留處理紀錄日誌 */}
           
           {/* 處理紀錄日誌 */}
           <div className="case-logs">

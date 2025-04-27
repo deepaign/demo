@@ -73,9 +73,19 @@ function AdminDashboard({ onLogout }) {
   // 成功通知狀態
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  // 視圖模式 (卡片/列表)
+  const [viewMode, setViewMode] = useState('card'); // 'card' 或 'list'
   
   // 搜尋關鍵字
   const [searchKeyword, setSearchKeyword] = useState('');
+  
+  // 統計資料
+  const statistics = {
+    waiting: caseData.filter(item => item.status === '待處理').length,
+    processing: caseData.filter(item => item.status === '處理中').length,
+    completed: caseData.filter(item => item.status === '已完成').length,
+    today: 8 // 假設今日新增數量
+  };
   
   // 登出功能
   const handleLogout = () => {
@@ -87,6 +97,11 @@ function AdminDashboard({ onLogout }) {
   // 處理搜尋
   const handleSearch = (e) => {
     setSearchKeyword(e.target.value);
+  };
+  
+  // 切換視圖模式
+  const toggleViewMode = () => {
+    setViewMode(viewMode === 'card' ? 'list' : 'card');
   };
   
   // 狀態標籤樣式映射
@@ -208,6 +223,10 @@ function AdminDashboard({ onLogout }) {
       <div className="dashboard-header">
         <h1>後台管理系統</h1>
         <div className="dashboard-actions">
+          <button className="view-toggle-btn" onClick={toggleViewMode}>
+            <span className={viewMode === 'card' ? 'list-icon' : 'card-icon'}></span>
+            {viewMode === 'card' ? '條列檢視' : '卡片檢視'}
+          </button>
           {/* 新增「新增案件」按鈕 */}
           <button className="create-case-btn" onClick={openCreateModal}>
             <span className="plus-icon">+</span>
@@ -220,37 +239,33 @@ function AdminDashboard({ onLogout }) {
         </div>
       </div>
       
-      {/* 儀表板統計卡片 */}
+      {/* 儀表板統計卡片 - 移除圖示，只保留數字 */}
       <div className="statistics-cards">
         <div className="stat-card red">
-          <div className="stat-icon icon-waiting"></div>
           <div className="stat-content">
             <div className="stat-title">待處理案件</div>
-            <div className="stat-number">12</div>
+            <div className="stat-number">{statistics.waiting}</div>
           </div>
         </div>
         
         <div className="stat-card blue">
-          <div className="stat-icon icon-processing"></div>
           <div className="stat-content">
             <div className="stat-title">處理中案件</div>
-            <div className="stat-number">24</div>
+            <div className="stat-number">{statistics.processing}</div>
           </div>
         </div>
         
         <div className="stat-card green">
-          <div className="stat-icon icon-completed"></div>
           <div className="stat-content">
             <div className="stat-title">已完成案件</div>
-            <div className="stat-number">127</div>
+            <div className="stat-number">{statistics.completed}</div>
           </div>
         </div>
         
         <div className="stat-card yellow">
-          <div className="stat-icon icon-today"></div>
           <div className="stat-content">
             <div className="stat-title">今日新增</div>
-            <div className="stat-number">8</div>
+            <div className="stat-number">{statistics.today}</div>
           </div>
         </div>
       </div>
@@ -324,61 +339,119 @@ function AdminDashboard({ onLogout }) {
         </div>
       </div>
       
-      {/* 案件卡片列表 - 優化後的呈現方式 */}
-      <div className="case-cards">
-        {filteredCases.length > 0 ? (
-          filteredCases.map((item) => (
-            <div key={item.id} className="case-card">
-              <div className="card-header">
-                <div className="case-id">{item.id}</div>
-                <div className={`case-priority ${priorityClass(item.priority)}`}>{item.priority}</div>
-              </div>
-              
-              <div className="card-body">
-                <h3 className="case-title">{item.title}</h3>
+      {/* 案件列表 - 根據視圖模式切換顯示方式 */}
+      {viewMode === 'card' ? (
+        /* 卡片視圖 */
+        <div className="case-cards">
+          {filteredCases.length > 0 ? (
+            filteredCases.map((item) => (
+              <div key={item.id} className="case-card">
+                <div className="card-header">
+                  <div className="case-id">{item.id}</div>
+                  <div className={`case-priority ${priorityClass(item.priority)}`}>{item.priority}</div>
+                </div>
                 
-                <div className="case-meta">
-                  <div className="meta-item">
-                    <span className="meta-label">陳情人:</span>
-                    <span className="meta-value">{item.reporter}</span>
+                <div className="card-body">
+                  <h3 className="case-title">{item.title}</h3>
+                  
+                  <div className="case-meta">
+                    <div className="meta-item">
+                      <span className="meta-label">陳情人:</span>
+                      <span className="meta-value">{item.reporter}</span>
+                    </div>
+                    <div className="meta-item">
+                      <span className="meta-label">聯絡方式:</span>
+                      <span className="meta-value">{item.contact}</span>
+                    </div>
+                    <div className="meta-item">
+                      <span className="meta-label">地點:</span>
+                      <span className="meta-value">{item.location}</span>
+                    </div>
+                    <div className="meta-item">
+                      <span className="meta-label">類別:</span>
+                      <span className="meta-value">{item.category}</span>
+                    </div>
+                    <div className="meta-item">
+                      <span className="meta-label">處理人:</span>
+                      <span className="meta-value">{item.assignee}</span>
+                    </div>
                   </div>
-                  <div className="meta-item">
-                    <span className="meta-label">聯絡方式:</span>
-                    <span className="meta-value">{item.contact}</span>
+                </div>
+                
+                <div className="card-footer">
+                  <div className="case-date">{item.date}</div>
+                  <div className="case-status">
+                    <span className={`status-tag ${statusClass(item.status)}`}>{item.status}</span>
                   </div>
-                  <div className="meta-item">
-                    <span className="meta-label">地點:</span>
-                    <span className="meta-value">{item.location}</span>
-                  </div>
-                  <div className="meta-item">
-                    <span className="meta-label">類別:</span>
-                    <span className="meta-value">{item.category}</span>
-                  </div>
-                  <div className="meta-item">
-                    <span className="meta-label">處理人:</span>
-                    <span className="meta-value">{item.assignee}</span>
+                  <div className="case-actions">
+                    <button className="action-btn view-btn" onClick={() => handleViewCase(item)}>查看詳情</button>
                   </div>
                 </div>
               </div>
-              
-              <div className="card-footer">
-                <div className="case-date">{item.date}</div>
-                <div className="case-status">
-                  <span className={`status-tag ${statusClass(item.status)}`}>{item.status}</span>
-                </div>
-                <div className="case-actions">
-                  <button className="action-btn view-btn" onClick={() => handleViewCase(item)}>查看詳情</button>
-                </div>
-              </div>
+            ))
+          ) : (
+            <div className="empty-state">
+              <div className="empty-icon">📭</div>
+              <p>沒有符合條件的案件</p>
             </div>
-          ))
-        ) : (
-          <div className="empty-state">
-            <div className="empty-icon">📭</div>
-            <p>沒有符合條件的案件</p>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        /* 列表視圖 */
+        <div className="case-list-container">
+          <table className="case-list-table">
+            <thead>
+              <tr>
+                <th>案件編號</th>
+                <th>案件標題</th>
+                <th>類別</th>
+                <th>陳情人</th>
+                <th>地點</th>
+                <th>受理日期</th>
+                <th>處理人</th>
+                <th>優先級</th>
+                <th>狀態</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCases.length > 0 ? (
+                filteredCases.map((item) => (
+                  <tr key={item.id}>
+                    <td className="case-id-cell">{item.id}</td>
+                    <td className="case-title-cell">{item.title}</td>
+                    <td>{item.category}</td>
+                    <td>{item.reporter}</td>
+                    <td>{item.location}</td>
+                    <td>{item.date}</td>
+                    <td>{item.assignee}</td>
+                    <td>
+                      <span className={`priority-tag ${priorityClass(item.priority)}`}>{item.priority}</span>
+                    </td>
+                    <td>
+                      <span className={`status-tag ${statusClass(item.status)}`}>{item.status}</span>
+                    </td>
+                    <td>
+                      <button className="list-view-btn" onClick={() => handleViewCase(item)}>
+                        查看
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="empty-row">
+                  <td colSpan="10">
+                    <div className="empty-state">
+                      <div className="empty-icon">📭</div>
+                      <p>沒有符合條件的案件</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
       
       {/* 分頁 */}
       <div className="pagination">
