@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Homepage from './Homepage/Homepage';
-import PetitionPage from './PetitionPage/PetitionPage';
 import AchievementsPage from './AchievementsPage/AchievementsPage';
 import AdminLogin from './AdminLogin/AdminLogin';
 import AdminDashboard from './AdminDashboard/AdminDashboard';
-import VoterDashboard from './VoterDashboard/VoterDashboard'; // 選民資料分析頁面
+import VoterDashboard from './VoterDashboard/VoterDashboard';
 import './index.css';
 
 // 添加全局樣式，包括字體引入
@@ -36,8 +35,6 @@ function App() {
   // 簡單的頁面路由處理
   const renderPage = () => {
     switch(currentPage) {
-      case 'petition':
-        return <PetitionPage />;
       case 'achievements':
         return <AchievementsPage />;
       case 'admin':
@@ -60,7 +57,7 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* 頂部導航欄 */}
+      {/* 頂部導航欄 - 移除「民眾陳情」選項 */}
       <header className="navbar">
         <div className="logo" onClick={() => setCurrentPage('home')} style={{ cursor: 'pointer' }}>
           <span className="icon-clock"></span>
@@ -73,13 +70,6 @@ function App() {
             onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}
           >
             首頁
-          </a>
-          <a 
-            href="#" 
-            className={currentPage === 'petition' ? 'active' : ''} 
-            onClick={(e) => { e.preventDefault(); setCurrentPage('petition'); }}
-          >
-            民眾陳情
           </a>
           <a 
             href="#" 
