@@ -18,7 +18,7 @@ document.head.appendChild(styleElement);
 
 // 應用主組件
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('voter-dashboard'); // 預設顯示選民資料分析頁面
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   // 處理登入成功
@@ -32,6 +32,11 @@ function App() {
     setCurrentPage('home');
   };
 
+  // 處理導航
+  const handleNavigate = (page) => {
+    setCurrentPage(page);
+  };
+
   // 簡單的頁面路由處理
   const renderPage = () => {
     switch(currentPage) {
@@ -42,13 +47,8 @@ function App() {
         return isAdminLoggedIn 
           ? <AdminDashboard onLogout={handleLogout} /> 
           : <AdminLogin onLoginSuccess={handleLoginSuccess} />;
-      case 'voter-dashboard': // 選民資料分析頁面
-        return isAdminLoggedIn 
-          ? <VoterDashboard /> 
-          : <AdminLogin onLoginSuccess={() => {
-              handleLoginSuccess();
-              setCurrentPage('voter-dashboard');
-            }} />;
+      case 'voter-dashboard': // 選民資料分析頁面 - 不需要登入即可訪問
+        return <VoterDashboard onNavigate={handleNavigate} />;
       case 'home':
       default:
         return <Homepage />;
@@ -57,7 +57,7 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* 頂部導航欄 - 移除「民眾陳情」選項 */}
+      {/* 頂部導航欄 */}
       <header className="navbar">
         <div className="logo" onClick={() => setCurrentPage('home')} style={{ cursor: 'pointer' }}>
           <span className="icon-clock"></span>
@@ -100,7 +100,7 @@ function App() {
 
       {/* 頁腳 - 在後台儀表板頁面和選民資料分析頁面不顯示 */}
       {!(currentPage === 'admin' && isAdminLoggedIn) && 
-       !(currentPage === 'voter-dashboard' && isAdminLoggedIn) && (
+       !(currentPage === 'voter-dashboard') && (
         <footer>
           <div className="footer-content">
             <div className="footer-section">

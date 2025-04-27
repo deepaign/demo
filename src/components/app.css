@@ -1,0 +1,132 @@
+/* 全局樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f5f7fa;
+    color: #1f2937;
+  }
+  
+  /* 應用容器 */
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* 頂部導航欄 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #1e40af;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* 主要內容區域 */
+  .main-content {
+    display: flex;
+    flex: 1;
+  }
+  
+  /* 側邊欄 */
+  .sidebar {
+    width: 240px;
+    background-color: white;
+    border-right: 1px solid #e5e7eb;
+    padding: 1.5rem 0;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+  }
+  
+  .sidebar li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .sidebar a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: #4b5563;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  
+  .sidebar li.active a {
+    color: #1e40af;
+    background-color: #eff6ff;
+    border-left-color: #1e40af;
+    font-weight: 500;
+  }
+  
+  .sidebar a:hover {
+    background-color: #f9fafb;
+    color: #1e3a8a;
+  }
+  
+  /* 內容區域 */
+  .content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* 響應式調整 */
+  @media (max-width: 768px) {
+    .header {
+      padding: 1rem;
+    }
+    
+    .main-content {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 0;
+    }
+    
+    .content {
+      padding: 1.5rem 1rem;
+    }
+  }
